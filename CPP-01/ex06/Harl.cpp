@@ -37,14 +37,17 @@ void Harl::filterComplaints( std::string level ) {
             std::cout << "[ DEBUG ]" << std::endl;
             (this->*complaints[0])();
             std::cout << std::endl;
+            //fallthrough
         case 1:
             std::cout << "[ INFO ]" << std::endl;
             (this->*complaints[1])();
             std::cout << std::endl;
+            //fallthrough
         case 2:
             std::cout << "[ WARNING ]" << std::endl;
             (this->*complaints[2])();
             std::cout << std::endl;
+            //fallthrough
         case 3:
             std::cout << "[ ERROR ]" << std::endl;
             (this->*complaints[3])();
