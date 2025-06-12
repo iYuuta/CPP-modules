@@ -1,6 +1,6 @@
 #include "DiamondTrap.hpp"
 
-DiamondTrap::DiamondTrap(): ClapTrap("Default_clap_trap"), FragTrap(), ScavTrap() {
+DiamondTrap::DiamondTrap(): ClapTrap("Default_clap_trap"), ScavTrap(), FragTrap() {
     this->_Name = "Default";
     this->_Hp = FragTrap::_Hp;
     this->_Energy = ScavTrap::_Energy;
@@ -12,7 +12,7 @@ DiamondTrap::~DiamondTrap() {
     std::cout << "DiamondTrap Default destructor called" << std::endl;
 }
 
-DiamondTrap::DiamondTrap(const std::string& name) : ClapTrap(name + "_clap_trap"), FragTrap(), ScavTrap() {
+DiamondTrap::DiamondTrap(const std::string& name) : ClapTrap(name + "_clap_trap"), ScavTrap(), FragTrap() {
     this->_Name = name;
     this->_Hp = FragTrap::_Hp;
     this->_Energy = ScavTrap::_Energy;
