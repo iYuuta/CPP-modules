@@ -48,6 +48,10 @@ const std::string& Character::getName() const {
 
 void Character::equip(AMateria* m) {
     for (int i = 0; i < 4; i++) {
+        if (inventory[i] && inventory[i] == m) {
+            std::cout << "you have already equiped this AMateria of " << m->getType() << " type" << std::endl;
+            break ;
+        }
         if (!inventory[i]) {
             inventory[i] = m;
             std::cout << "you have equiped a AMateria of " << m->getType() << " type" << std::endl;

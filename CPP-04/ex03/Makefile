@@ -4,7 +4,7 @@ OBJ = $(SRC:.cpp=.o)
 
 CPPFLAG = -Wall -Wextra -Werror -std=c++98
 
-NAME = idk
+NAME = AMateria
 
 all : $(NAME)
 

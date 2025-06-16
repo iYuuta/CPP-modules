@@ -17,6 +17,7 @@ int main() {
     tmp = src->createMateria("ice");
     to_clean = tmp;
     me->equip(tmp);
+    me->equip(tmp);
     tmp = src->createMateria("cure");
     me->equip(tmp);
     ICharacter* bob = new Character("bob");
