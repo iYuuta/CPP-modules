@@ -14,6 +14,7 @@ class Character : public ICharacter {
         Character(const Character& copy);
         Character& operator=(const Character &_character);
         ~Character();
+        
         std::string const & getName() const;
         void equip(AMateria* m);
         void unequip(int idx);

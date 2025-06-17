@@ -1,7 +1,7 @@
 #include "WrongCat.hpp"
 
 WrongCat::WrongCat() : WrongAnimal() {
-    type = "impostor";
+    type = "car";
     std::cout << "an impostor cat has joined the lobby" << std::endl;
 }
 
@@ -22,5 +22,5 @@ WrongCat& WrongCat::operator=(const WrongCat &WrongCat) {
 }
 
 void WrongCat::makeSound() {
-    std::cout << "neooow" << std::endl;
+    std::cout << "vrooom" << std::endl;
 }

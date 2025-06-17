@@ -10,8 +10,12 @@ class AMateria
         std::string type;
         
     public:
-        AMateria(std::string const & type);
-        virtual ~AMateria();
+        AMateria();
+		AMateria(const std::string &type);
+		AMateria(const AMateria &src);
+		AMateria& operator=(const AMateria &src);
+		virtual ~AMateria();
+        
         std::string const & getType() const;
         virtual AMateria* clone() const = 0;
         virtual void use(ICharacter& target);

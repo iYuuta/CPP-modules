@@ -1,6 +1,16 @@
 #include "Cure.hpp"
 
-Cure::Cure() : AMateria("cure") {}
+Cure::Cure(): AMateria("cure") {}
+
+Cure::Cure(const Cure &src) {
+	type = src.type;
+}
+
+Cure& Cure::operator=(const Cure &src) {
+	if (this != &src)
+		type = src.type;
+	return (*this);
+}
 
 Cure::~Cure() {}
 
