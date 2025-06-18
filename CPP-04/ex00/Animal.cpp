@@ -20,7 +20,7 @@ Animal& Animal::operator=(const Animal& Animal) {
     return *this;
 }
 
-void Animal::makeSound() {
+void Animal::makeSound() const {
     std::cout << "weird animal sound" << std::endl;
 }
 

@@ -14,6 +14,7 @@ AMateria& AMateria::operator=(const AMateria &src) {
     if (this == &src)
         return *this;
     this->type = src.type;
+    return *this;
 }
 
 std::string const & AMateria::getType() const {

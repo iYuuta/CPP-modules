@@ -11,5 +11,5 @@ class Cat : public Animal {
 		Cat(const Cat &copy);
 		Cat &operator=(const Cat &Cat);
 		~Cat();
-        void makeSound();
+        void makeSound() const;
 };

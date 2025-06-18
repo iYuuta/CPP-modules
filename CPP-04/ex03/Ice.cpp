@@ -2,9 +2,7 @@
 
 Ice::Ice(): AMateria("ice") {}
 
-Ice::Ice(const Ice &src) {
-	type = src.type;
-}
+Ice::Ice(const Ice &src): AMateria(src.type) {}
 
 Ice::~Ice() {}
 

@@ -9,5 +9,5 @@ class WrongCat : public WrongAnimal {
 		WrongCat &operator=(const WrongCat &WrongCat);
 		~WrongCat();
 
-        void makeSound();
+        void makeSound() const;
 };
