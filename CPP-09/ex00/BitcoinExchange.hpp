@@ -9,18 +9,22 @@
 #include <exception>
 
 class BitcoinExchange {
-    private:
-        std::map<unsigned long, float> btc;
-    public:
-        BitcoinExchange();
-        ~BitcoinExchange();
-        void parseDB(std::ifstream& file);
-        float getvalue(unsigned long index);
-        class FailedToOpenFile : public std::exception {
-            public :
-                const char *what() const throw() ;
-        };
-};
+	private:
+		std::map<unsigned long, double>	_btc;
+		double							_value;
+		unsigned long					_date;
+		double 							getValue(std::string& str, int index);
+		unsigned long					getDate(std::string& str, int index);
+		void 							printResult(const std::string& line);
+		const std::string				floatToString(float value);
 
-unsigned long get_date(std::string& str, int index);
-float get_value(std::string& str, int index);
+	public:
+		BitcoinExchange();
+		~BitcoinExchange();
+		BitcoinExchange(const BitcoinExchange& other);
+		BitcoinExchange& operator=(const BitcoinExchange& other);
+
+		void run(const char *str);
+		void isDateValid(int year, int month, int day);
+		void isValueValid(float value);
+};
