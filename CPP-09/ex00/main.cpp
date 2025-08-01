@@ -3,7 +3,7 @@
 int main(int ac, char **av) {
 	std::cout << std::fixed << std::setprecision(2);
 	if (ac != 2) {
-		std::cerr << "invalid arguments\n";
+		std::cerr << "Error: could not open file.\n";
 		return 1;
 	}
 	try {

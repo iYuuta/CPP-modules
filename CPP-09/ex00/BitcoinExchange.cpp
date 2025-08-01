@@ -73,7 +73,6 @@ const std::string BitcoinExchange::floatToString(float value) {
 }
 
 void BitcoinExchange::printResult(const std::string& date) {
-	unsigned long value;
 	std::map<unsigned long, double>::iterator it;
 
 	it = this->_btc.lower_bound(_date);

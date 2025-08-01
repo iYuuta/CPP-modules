@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <iomanip>
-#include <exception>
+#include <sstream>
 
 class BitcoinExchange {
 	private:
