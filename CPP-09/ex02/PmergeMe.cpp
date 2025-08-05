@@ -18,15 +18,41 @@ PmergeMe::PmergeMe(std::string args) {
 		throw (std::string) "too few arguments";
 }
 
-void PmergeMe::mergeInsertVec(std::vector<int>& mainChain) {
-	if (is_sorted(mainChain))
-		return ;
-	int middle, start, end;
-	
+void merge(std::vector<std::pair<int, int> >& arr, int left, int mid, int right) {
+	std::vector<std::pair<int, int> > leftArr(arr.begin() + left, arr.begin() + mid + 1);
+	std::vector<std::pair<int, int> > rightArr(arr.begin() + mid + 1, arr.begin() + right + 1);
+
+	int i = 0, j = 0, k = left;
+	while (i < (int)leftArr.size() && j < (int)rightArr.size()) {
+		if (leftArr[i] <= rightArr[j])
+			arr[k++] = leftArr[i++];
+		else
+			arr[k++] = rightArr[j++];
+	}
+	while (i < (int)leftArr.size())
+		arr[k++] = leftArr[i++];
+	while (j < (int)rightArr.size())
+		arr[k++] = rightArr[j++];
 }
 
-void PmergeMe::mergeInsertDeq(std::deque<int>& mainChain) {
+void mergeSort(std::vector<std::pair<int, int> >& arr, int left, int right) {
+	if (left >= right)
+		return;
+	int mid = left + (right - left) / 2;
+	mergeSort(arr, left, mid);
+	mergeSort(arr, mid + 1, right);
+	merge(arr, left, mid, right);
+}
 
+
+std::vector<int> generateJacobsthal(int n) {
+	std::vector<int> sequence;
+	int num = 0;
+	for (int i = 0; i < n; i++) {
+		num = (pow(2, i) - pow(-1, i)) / 3;
+		sequence.push_back(num);
+	}
+	return sequence;
 }
 
 void PmergeMe::sortVector() {
@@ -45,23 +71,20 @@ void PmergeMe::sortVector() {
 			_vecPair.push_back(std::make_pair(a, b));
 		}
 	}
-
-	for (std::vector<std::pair<int, int>>::iterator it = _vecPair.begin(); it != _vecPair.end(); it++) {
+	for (std::vector<std::pair<int, int> >::iterator it = _vecPair.begin(); it != _vecPair.end(); it++) {
 		if (it->first < it->second)
 			std::swap(it->first, it->second);
 	}
-
+	mergeSort(_vecPair, 0, _vecPair.size() - 1);
 	std::vector<int> mainChain;
+	mainChain.push_back(_vecPair.front().second);
 	for (size_t i = 0; i < _vecPair.size(); i++)
-		mainChain.push_back(_vecPair[i].first);
-
-	mergeInsertVec(mainChain);
-
+		mainChain.push_back(_vecPair[i].first); 
 	std::vector<int> pending;
 	for (size_t i = 0; i < _vecPair.size(); i++)
 		pending.push_back(_vecPair[i].second);
+	std::vector<int> seq = generateJacobsthal(pending.size());
 
-	// jacobsthal_insert(mainChain, pending);
 }
 
 void PmergeMe::sortDeque() {
@@ -69,5 +92,5 @@ void PmergeMe::sortDeque() {
 }
 
 void PmergeMe::run() {
-
+	sortVector();
 }

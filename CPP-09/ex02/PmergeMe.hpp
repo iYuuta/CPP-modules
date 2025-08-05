@@ -11,13 +11,12 @@ class PmergeMe {
 	private:
 		std::vector<int>					_vector;
 		std::deque<int>						_deque;
-		std::vector<std::pair<int, int>>	_vecPair;
-		std::vector<std::pair<int, int>>	_deqPair;
+		std::vector<std::pair<int, int> >	_vecPair;
+		std::vector<std::pair<int, int> >	_deqPair;
 
 		void			sortVector();
 		void			sortDeque();
-		void			mergeInsertVec(std::vector<int>& mainChain);
-		void			mergeInsertDeq(std::deque<int>& mainChain);
+		void			mergeInsertDeq(std::deque<int> mainChain);
 		PmergeMe();
 	public:
 		PmergeMe(std::string args);
@@ -26,7 +25,7 @@ class PmergeMe {
 };
 
 template		<typename T>
-bool		is_sorted(T d)
+bool		isSorted(T d)
 {
 	typename	T::iterator	it = d.begin();
 	for (; it != d.end() - 1; ++it)
