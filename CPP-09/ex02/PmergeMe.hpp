@@ -20,19 +20,9 @@ class PmergeMe {
 
 		void			sortVector();
 		void			sortDeque();
-		void			mergeInsertDeq(std::deque<int> mainChain);
 		PmergeMe();
 	public:
 		PmergeMe(int ac, char **av);
 		~PmergeMe();
 		void	run();
 };
-
-template		<typename T>
-bool		isSorted(T d)
-{
-	typename	T::iterator	it = d.begin();
-	for (; it != d.end() - 1; ++it)
-		if (*it > *(it + 1))	return	0;
-	return	1;
-}

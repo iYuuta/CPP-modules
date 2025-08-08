@@ -146,14 +146,14 @@ void PmergeMe::sortVector() {
     	    break;
     	if (!inserted[jump_index]) {
 	        int value = pending[jump_index];
-	        auto pos = std::lower_bound(_vector.begin(), _vector.end(), value);
+	        std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), value);
 	    	_vector.insert(pos, value);
     	    inserted[jump_index] = true;
 	    }
 	    for (int j = jump_index - 1; j > (int)prev_jump; --j) {
 	        if (!inserted[j]) {
     	        int value = pending[j];
-	            auto pos = std::lower_bound(_vector.begin(), _vector.end(), value);
+	            std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), value);
             	_vector.insert(pos, value);
         	    inserted[j] = true;
     	    }
@@ -175,54 +175,70 @@ void PmergeMe::sortVector() {
 
 void PmergeMe::sortDeque() {
     long a, b, stray = LONG_MAX;
-    _deqPair.clear();
-    while (!_deque.empty()) {
-        if (_deque.size() == 1) {
-            stray = _deque.front();
-            _deque.pop_front();
-        } else {
-            a = _deque.front();
-            _deque.pop_front();
-            b = _deque.front();
-            _deque.pop_front();
-            _deqPair.push_back(std::make_pair(a, b));
-        }
-    }
-    for (std::deque<std::pair<int, int>>::iterator it = _deqPair.begin(); it != _deqPair.end(); ++it) {
-        if (it->first < it->second)
-            std::swap(it->first, it->second);
-    }
-    mergeSort(_deqPair, 0, _deqPair.size() - 1);
-    _deque.push_back(_deqPair.front().second);
-    for (size_t i = 0; i < _deqPair.size(); i++)
-        _deque.push_back(_deqPair[i].first);
-    _deqPair.pop_front();
-    std::deque<int> pending;
-    for (size_t i = 0; i < _deqPair.size(); i++)
-        pending.push_back(_deqPair[i].second);
-    std::deque<int> seq = generateJacobsthaldeq(pending.size());
-    std::deque<bool> inserted(pending.size(), false);
-    int value;
-    for (size_t i = 0; i < seq.size(); ++i) {
-        int index = seq[i];
-        if (index >= (int)pending.size() || inserted[index])
-            continue;
-        inserted[index] = true;
-        value = pending[index];
-        std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), value);
-        _deque.insert(pos, value);
-    }
-    for (size_t i = 0; i < pending.size(); ++i) {
-        if (inserted[i])
-            continue;
-        value = pending[i];
-        std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), value);
-        _deque.insert(pos, value);
-    }
-    if (stray != LONG_MAX) {
-        std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), stray);
-        _deque.insert(pos, stray);
-    }
+
+    while (_deque.size() > 0) {
+		if (_deque.size() == 1) {
+			stray = _deque.front();
+			_deque.erase(_deque.begin());
+		}
+		else {
+			a = _deque.front();
+			_deque.erase(_deque.begin());
+			b = _deque.front();
+			_deque.erase(_deque.begin());
+			_deqPair.push_back(std::make_pair(a, b));
+		}
+	}
+	for (std::deque<std::pair<int, int> >::iterator it = _deqPair.begin(); it != _deqPair.end(); it++) {
+		if (it->first < it->second)
+			std::swap(it->first, it->second);
+	}
+	mergeSort(_deqPair, 0, _deqPair.size() - 1);
+	_deque.push_back(_deqPair.front().second);
+	for (size_t i = 0; i < _deqPair.size(); i++)
+		_deque.push_back(_deqPair[i].first); 
+	_deqPair.erase(_deqPair.begin());
+	std::deque<int> pending;
+	for (size_t i = 0; i < _deqPair.size(); i++)
+		pending.push_back(_deqPair[i].second);
+	std::deque<int> seq = generateJacobsthaldeq(pending.size());
+	
+	std::deque<bool> inserted(pending.size(), false);
+	int value;
+	std::deque<int>::iterator pos;
+
+	size_t prev_jump = 1;
+	for (size_t i = 2; i < seq.size(); ++i) {
+    	int jump_index = seq[i];
+	    if (jump_index >= (int)pending.size())
+    	    break;
+    	if (!inserted[jump_index]) {
+	        int value = pending[jump_index];
+	        std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), value);
+	    	_deque.insert(pos, value);
+    	    inserted[jump_index] = true;
+	    }
+	    for (int j = jump_index - 1; j > (int)prev_jump; --j) {
+	        if (!inserted[j]) {
+    	        int value = pending[j];
+	            std::deque<int>::iterator pos = std::lower_bound(_deque.begin(), _deque.end(), value);
+            	_deque.insert(pos, value);
+        	    inserted[j] = true;
+    	    }
+	    }
+    	prev_jump = jump_index;
+	}
+	for (size_t i = 0; i < pending.size(); ++i) {
+		if (inserted[i])
+			continue;
+		value = pending[i];
+		pos = std::lower_bound(_deque.begin(), _deque.end(), value);
+		_deque.insert(pos, value);
+	}
+	if (stray != LONG_MAX) {
+		pos = std::lower_bound(_deque.begin(), _deque.end(), stray);
+		_deque.insert(pos, stray);
+	}
 }
 
 void PmergeMe::run() {
@@ -231,9 +247,11 @@ void PmergeMe::run() {
 	std::cout << " " << *it;
 	std::cout << std::endl;
 	double end;
+	
 	double start = get_time();
 	sortVector();
 	end = get_time();
+
 	double duration_On = (end - start);
 	std::cout << "after: ";
 	for (std::vector<int>::iterator it = _vector.begin(); it != _vector.end(); it++)
@@ -241,17 +259,10 @@ void PmergeMe::run() {
 	std::cout << std::endl;
 	std::cout << "Time to process a range of " << _nbElements << " elements with std::vector : " << duration_On << " us" << std::endl;
 
-	// std::cout << "Before:";
-	// for (std::deque<int>::iterator it = _deque.begin(); it != _deque.end(); it++)
-	// std::cout << " " << *it;
-	// std::cout << std::endl;
 	start = get_time();
 	sortDeque();
 	end = get_time();
+
 	duration_On = (end - start);
-	// std::cout << "after: ";
-	// for (std::deque<int>::iterator it = _deque.begin(); it != _deque.end(); it++)
-	// 	std::cout << " " << *it;
-	// std::cout << std::endl;
 	std::cout << "Time to process a range of " << _nbElements << " elements with std::deque : " << duration_On << " us" << std::endl;
 }
