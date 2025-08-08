@@ -137,26 +137,38 @@ void PmergeMe::sortVector() {
 	
 	std::vector<bool> inserted(pending.size(), false);
 	int value;
+	std::vector<int>::iterator pos;
 
-	for (size_t i = 0; i < seq.size(); ++i) {
-		int index = seq[i];
-		if (index >= (int)pending.size() || inserted[index])
-			continue;
-		inserted[index] = true;
-
-		value = pending[index];
-		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), value);
-		_vector.insert(pos, value);
+	size_t prev_jump = 1;
+	for (size_t i = 2; i < seq.size(); ++i) {
+    	int jump_index = seq[i];
+	    if (jump_index >= (int)pending.size())
+    	    break;
+    	if (!inserted[jump_index]) {
+	        int value = pending[jump_index];
+	        auto pos = std::lower_bound(_vector.begin(), _vector.end(), value);
+	    	_vector.insert(pos, value);
+    	    inserted[jump_index] = true;
+	    }
+	    for (int j = jump_index - 1; j > (int)prev_jump; --j) {
+	        if (!inserted[j]) {
+    	        int value = pending[j];
+	            auto pos = std::lower_bound(_vector.begin(), _vector.end(), value);
+            	_vector.insert(pos, value);
+        	    inserted[j] = true;
+    	    }
+	    }
+    	prev_jump = jump_index;
 	}
 	for (size_t i = 0; i < pending.size(); ++i) {
 		if (inserted[i])
 			continue;
 		value = pending[i];
-		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), value);
+		pos = std::lower_bound(_vector.begin(), _vector.end(), value);
 		_vector.insert(pos, value);
 	}
 	if (stray != LONG_MAX) {
-		std::vector<int>::iterator pos = std::lower_bound(_vector.begin(), _vector.end(), stray);
+		pos = std::lower_bound(_vector.begin(), _vector.end(), stray);
 		_vector.insert(pos, stray);
 	}
 }
@@ -218,8 +230,8 @@ void PmergeMe::run() {
 	for (std::vector<int>::iterator it = _vector.begin(); it != _vector.end(); it++)
 	std::cout << " " << *it;
 	std::cout << std::endl;
-	double start = get_time();
 	double end;
+	double start = get_time();
 	sortVector();
 	end = get_time();
 	double duration_On = (end - start);
