@@ -11,7 +11,7 @@ PmergeMe::PmergeMe(int ac, char **av) {
 		std::istringstream oss(av[i]);
 		if (!(oss >> num) || !oss.eof())
 			throw (std::string) "Invalid number";
-		if (num > INT32_MAX || num < 0)
+		if (num > INT_MAX || num < 0)
 			throw (std::string) "Invalid number";
 		_deque.push_back(num);
 		_vector.push_back(num);
@@ -174,9 +174,9 @@ void PmergeMe::sortVector() {
 }
 
 void PmergeMe::sortDeque() {
-    long a, b, stray = LONG_MAX;
+	long	a, b, stray = LONG_MAX;
 
-    while (_deque.size() > 0) {
+	while (_deque.size() > 0) {
 		if (_deque.size() == 1) {
 			stray = _deque.front();
 			_deque.erase(_deque.begin());
@@ -186,7 +186,7 @@ void PmergeMe::sortDeque() {
 			_deque.erase(_deque.begin());
 			b = _deque.front();
 			_deque.erase(_deque.begin());
-			_deqPair.push_back(std::make_pair(a, b));
+			_vecPair.push_back(std::make_pair(a, b));
 		}
 	}
 	for (std::deque<std::pair<int, int> >::iterator it = _deqPair.begin(); it != _deqPair.end(); it++) {

@@ -23,31 +23,29 @@ void RPN::run(std::string args) {
 
 	while (iss >> token) {
 		if (token.length() == 1 && std::string("+-*/").find(token[0]) != std::string::npos) {
-			if (_stack.size() < 2)
-				throw std::string("Error");
-			while (_stack.size() > 1) {
-				fst = _stack.top(); _stack.pop();
-				sec = _stack.top(); _stack.pop();
-				switch (token[0]) {
-					case '+':
-						_stack.push(sec + fst);
-						break;
-					case '-':
-						_stack.push(sec - fst);
-						break;
-					case '*':
-						_stack.push(sec * fst);
-						break;
-					case '/':
-						if (fst == 0)
-							throw std::string("Division by zero");
-						_stack.push(sec / fst);
-						break;
+			fst = _stack.top(); _stack.pop();
+			sec = _stack.top(); _stack.pop();
+			switch (token[0]) {
+				case '+':
+					_stack.push(sec + fst);
+					break;
+				case '-':
+					_stack.push(sec - fst);
+					break;
+				case '*':
+					_stack.push(sec * fst);
+					break;
+				case '/':
+					if (fst == 0)
+						throw std::string("Division by zero");
+					_stack.push(sec / fst);
+					break;
 			}
 		}
-		}
-		else 
+		else if (token.length() == 1 && std::isdigit(token[0]))
 			_stack.push(std::atol(token.c_str()));
+		else
+			throw std::string("Error");
 	}
 	if (_stack.size() != 1)
 		throw std::string("Error");

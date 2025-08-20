@@ -10,6 +10,7 @@ int main(int ac, char **av) {
         calculator.run(av[1]);
     }
     catch (std::string error) {
-        std::cerr << "Error: " << error << std::endl;
+        std::cerr << error << std::endl;
+        return 1;
     }
 }
